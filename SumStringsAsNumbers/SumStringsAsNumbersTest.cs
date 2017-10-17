@@ -8,12 +8,6 @@ namespace SumStringsAsNumbers
     public class SumStringsAsNumbersTest
     {
         [TestMethod]
-        public void Input_Empty_Empty_ShouldReturn_Error()
-        {
-            SumValueShouldEqual("Error", string.Empty, string.Empty);
-        }
-
-        [TestMethod]
         public void Input_1_1_ShouldReturn_Error()
         {
             SumValueShouldEqual("2", "1", "1");
@@ -50,9 +44,21 @@ namespace SumStringsAsNumbers
         }
 
         [TestMethod]
+        public void Input_107_00095_ShouldReturn_Error()
+        {
+            SumValueShouldEqual("202", "107", "00095");
+        }
+
+        [TestMethod]
         public void Input_132457_987654321_ShouldReturn_Error()
         {
             SumValueShouldEqual("987786778", "132457", "987654321");
+        }
+
+        [TestMethod]
+        public void Input_Null_1_ShouldReturn_Error()
+        {
+            SumValueShouldEqual("Error", null, "1");
         }
         private static void SumValueShouldEqual(string expected, string input1, string input2)
         {
@@ -71,14 +77,14 @@ namespace SumStringsAsNumbers
 
             public string Sum(string a, string b) 
             {
-                if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(a))
+                if (a == null || b == null)
                 {
                     return "Error";
                 }
 
-                addendStack = new Stack<char>(a);
+                addendStack = new Stack<char>(a.TrimStart('0'));
 
-                augendStack = new Stack<char>(b);
+                augendStack = new Stack<char>(b.TrimStart('0'));
 
                 var carry = 0;
 
@@ -114,10 +120,10 @@ namespace SumStringsAsNumbers
 
             private bool CalCulateFinish()
             {
-                return addendStack.Count != 0 || augendStack.Count != 0;
+                return addendStack.Count == 0 && augendStack.Count == 0;
             }
 
-            private static string GetRemainder(int sum)
+            private string GetRemainder(int sum)
             {
                 return (sum % 10).ToString();
             }
